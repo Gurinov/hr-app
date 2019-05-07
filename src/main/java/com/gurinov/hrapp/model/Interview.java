@@ -1,12 +1,15 @@
 package com.gurinov.hrapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Data
 @Entity
+@EqualsAndHashCode(exclude = "interviewers")
 public class Interview {
 
     @Id
@@ -24,6 +27,7 @@ public class Interview {
     @OneToOne(fetch = FetchType.EAGER)
     private Feedback feedback;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "interviews")
     private Set<Interviewer> interviewers;
 }

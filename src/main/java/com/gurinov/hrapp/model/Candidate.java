@@ -18,13 +18,13 @@ public class Candidate {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Skill> skills;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ContactDetails> contacts;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<CandidateExperience> experiences;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Attachment> attachments;
 
     private String name;

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/сandidate")
+@RequestMapping(path = "/candidate")
 public final class CandidateController {
 
     private final CandidateDao candidateDao;
