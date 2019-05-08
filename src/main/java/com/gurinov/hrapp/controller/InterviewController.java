@@ -1,7 +1,8 @@
 package com.gurinov.hrapp.controller;
 
-import com.gurinov.hrapp.dao.InterviewDao;
+import com.gurinov.hrapp.dto.InterviewDto;
 import com.gurinov.hrapp.model.Interview;
+import com.gurinov.hrapp.service.EntityService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,36 +11,34 @@ import java.util.List;
 @RequestMapping(path = "/interview")
 public final class InterviewController {
 
-    private final InterviewDao interviewDao;
+    private final EntityService<Interview, InterviewDto> interviewService;
 
-    public InterviewController(final InterviewDao interviewDao) {
-        this.interviewDao = interviewDao;
+    public InterviewController(final EntityService<Interview, InterviewDto> interviewService) {
+        this.interviewService = interviewService;
     }
 
     @GetMapping(path = "")
-    public @ResponseBody
-    List<Interview> getAll() {
-        return interviewDao.findAll();
+    public @ResponseBody List<InterviewDto> findAll() {
+        return interviewService.findAll();
     }
 
-    @GetMapping(path = "/getById/{id}/**")
-    public @ResponseBody Interview getById(@PathVariable final Integer id) {
-        return interviewDao.getOne(id);
+    @GetMapping(path = "/findById/{id}/**")
+    public @ResponseBody InterviewDto findById(@PathVariable final Integer id) {
+        return interviewService.findById(id);
     }
 
     @PostMapping(path = "/add/**")
-    public @ResponseBody List<Interview> addNew(@RequestBody final Interview interview) {
-        interviewDao.save(interview);
-        return interviewDao.findAll();
+    public void create(@RequestBody final Interview interview) {
+        interviewService.create(interview);
     }
 
     @DeleteMapping(path = "/delete/{id}/**")
     public void delete(@PathVariable final Integer id) {
-        interviewDao.deleteById(id);
+        interviewService.delete(id);
     }
 
     @PutMapping(path = "/update/**")
-    public void update(@RequestBody final Interview interview) {
-        interviewDao.saveAndFlush(interview);
+    public InterviewDto update(@RequestBody final Interview interview) {
+        return interviewService.update(interview);
     }
 }

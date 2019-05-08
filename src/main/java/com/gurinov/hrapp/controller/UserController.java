@@ -1,7 +1,8 @@
 package com.gurinov.hrapp.controller;
 
-import com.gurinov.hrapp.dao.UserDao;
+import com.gurinov.hrapp.dto.UserDto;
 import com.gurinov.hrapp.model.User;
+import com.gurinov.hrapp.service.EntityService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,35 +11,34 @@ import java.util.List;
 @RequestMapping(path = "/user")
 public final class UserController {
 
-    private final UserDao userDao;
+    private final EntityService<User, UserDto> userService;
 
-    public UserController(final UserDao userDao) {
-        this.userDao = userDao;
+    public UserController(final EntityService<User, UserDto> userService) {
+        this.userService = userService;
     }
 
     @GetMapping(path = "")
-    public @ResponseBody List<User> getAll() {
-        return userDao.findAll();
+    public @ResponseBody List<UserDto> findAll() {
+        return userService.findAll();
     }
 
-    @GetMapping(path = "/getById/{id}/**")
-    public @ResponseBody User getById(@PathVariable final Integer id) {
-        return userDao.getOne(id);
+    @GetMapping(path = "/findById/{id}/**")
+    public @ResponseBody UserDto findById(@PathVariable final Integer id) {
+        return userService.findById(id);
     }
 
     @PostMapping(path = "/add/**")
-    public @ResponseBody List<User> addNew(@RequestBody final User user) {
-        userDao.save(user);
-        return userDao.findAll();
+    public void create(@RequestBody final User user) {
+        userService.create(user);
     }
 
     @DeleteMapping(path = "/delete/{id}/**")
     public void delete(@PathVariable final Integer id) {
-        userDao.deleteById(id);
+        userService.delete(id);
     }
 
     @PutMapping(path = "/update/**")
-    public void update(@RequestBody final User user) {
-        userDao.saveAndFlush(user);
+    public UserDto update(@RequestBody final User user) {
+        return userService.update(user);
     }
 }

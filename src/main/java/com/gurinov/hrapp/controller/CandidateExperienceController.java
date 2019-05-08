@@ -1,45 +1,46 @@
 package com.gurinov.hrapp.controller;
 
-import com.gurinov.hrapp.dao.CandidateExperienceDao;
+import com.gurinov.hrapp.dto.CandidateExperienceDto;
 import com.gurinov.hrapp.model.CandidateExperience;
+import com.gurinov.hrapp.service.EntityService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/candidate_experience")
+@RequestMapping(path = "/candidateExperience")
 public final class CandidateExperienceController {
 
-    private final CandidateExperienceDao candidateExperienceDao;
+    private final EntityService<CandidateExperience, CandidateExperienceDto> candidateExperienceService;
 
-    public CandidateExperienceController(final CandidateExperienceDao candidateExperienceDao) {
-        this.candidateExperienceDao = candidateExperienceDao;
+    public CandidateExperienceController(
+            final EntityService<CandidateExperience, CandidateExperienceDto> candidateExperienceService
+    ) {
+        this.candidateExperienceService = candidateExperienceService;
     }
 
     @GetMapping(path = "")
-    public @ResponseBody
-    List<CandidateExperience> getAll() {
-        return candidateExperienceDao.findAll();
+    public @ResponseBody List<CandidateExperienceDto> findAll() {
+        return candidateExperienceService.findAll();
     }
 
-    @GetMapping(path = "/getById/{id}/**")
-    public @ResponseBody CandidateExperience getById(@PathVariable final Integer id) {
-        return candidateExperienceDao.getOne(id);
+    @GetMapping(path = "/findById/{id}/**")
+    public @ResponseBody CandidateExperienceDto findById(@PathVariable final Integer id) {
+        return candidateExperienceService.findById(id);
     }
 
     @PostMapping(path = "/add/**")
-    public @ResponseBody List<CandidateExperience> addNew(@RequestBody final CandidateExperience candidateExperience) {
-        candidateExperienceDao.save(candidateExperience);
-        return candidateExperienceDao.findAll();
+    public void create(@RequestBody final CandidateExperience candidateExperience) {
+        candidateExperienceService.create(candidateExperience);
     }
 
     @DeleteMapping(path = "/delete/{id}/**")
     public void delete(@PathVariable final Integer id) {
-        candidateExperienceDao.deleteById(id);
+        candidateExperienceService.delete(id);
     }
 
     @PutMapping(path = "/update/**")
-    public void update(@RequestBody final CandidateExperience candidateExperience) {
-        candidateExperienceDao.saveAndFlush(candidateExperience);
+    public CandidateExperienceDto update(@RequestBody final CandidateExperience candidateExperience) {
+        return candidateExperienceService.update(candidateExperience);
     }
 }

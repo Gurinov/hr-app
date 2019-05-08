@@ -1,6 +1,5 @@
 package com.gurinov.hrapp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,7 +14,6 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "interviewer_id")
     private Interviewer interviewer;

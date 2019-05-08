@@ -1,48 +1,44 @@
 package com.gurinov.hrapp.controller;
 
-import com.gurinov.hrapp.dao.FeedbackDao;
+import com.gurinov.hrapp.dto.FeedbackDto;
 import com.gurinov.hrapp.model.Feedback;
+import com.gurinov.hrapp.service.EntityService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 
 @RestController
 @RequestMapping(path = "/feedback")
 public final class FeedbackController {
 
-    private final FeedbackDao feedbackDao;
+    private final EntityService<Feedback, FeedbackDto> feedbackService;
 
-    public FeedbackController(final FeedbackDao feedbackDao) {
-        this.feedbackDao = feedbackDao;
+    public FeedbackController(final EntityService<Feedback, FeedbackDto> feedbackService) {
+        this.feedbackService = feedbackService;
     }
 
     @GetMapping(path = "")
-    public @ResponseBody
-    List<Feedback> getAll() {
-        return feedbackDao.findAll();
+    public @ResponseBody List<FeedbackDto> findAll() {
+        return feedbackService.findAll();
     }
 
-    @GetMapping(path = "/getById/{id}/**")
-    public @ResponseBody
-    Feedback getById(@PathVariable final Integer id) {
-        return feedbackDao.getOne(id);
+    @GetMapping(path = "/findById/{id}/**")
+    public @ResponseBody FeedbackDto findById(@PathVariable final Integer id) {
+        return feedbackService.findById(id);
     }
 
     @PostMapping(path = "/add/**")
-    public @ResponseBody
-    List<Feedback> addNew(@RequestBody final Feedback feedback) {
-        feedbackDao.save(feedback);
-        return feedbackDao.findAll();
+    public void create(@RequestBody final Feedback feedback) {
+        feedbackService.create(feedback);
     }
 
     @DeleteMapping(path = "/delete/{id}/**")
     public void delete(@PathVariable final Integer id) {
-        feedbackDao.deleteById(id);
+        feedbackService.delete(id);
     }
 
     @PutMapping(path = "/update/**")
-    public void update(@RequestBody final Feedback feedback) {
-        feedbackDao.saveAndFlush(feedback);
+    public FeedbackDto update(@RequestBody final Feedback feedback) {
+        return feedbackService.update(feedback);
     }
 }

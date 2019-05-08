@@ -1,6 +1,5 @@
 package com.gurinov.hrapp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -27,7 +26,6 @@ public class Interview {
     @OneToOne(fetch = FetchType.EAGER)
     private Feedback feedback;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "interviews")
     private Set<Interviewer> interviewers;
 }

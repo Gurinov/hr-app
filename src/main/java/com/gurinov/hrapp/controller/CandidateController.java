@@ -1,7 +1,8 @@
 package com.gurinov.hrapp.controller;
 
-import com.gurinov.hrapp.dao.CandidateDao;
+import com.gurinov.hrapp.dto.CandidateDto;
 import com.gurinov.hrapp.model.Candidate;
+import com.gurinov.hrapp.service.EntityService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,36 +11,34 @@ import java.util.List;
 @RequestMapping(path = "/candidate")
 public final class CandidateController {
 
-    private final CandidateDao candidateDao;
+    private final EntityService<Candidate, CandidateDto> candidateService;
 
-    public CandidateController(final CandidateDao candidateDao) {
-        this.candidateDao = candidateDao;
+    public CandidateController(final EntityService<Candidate, CandidateDto> candidateService) {
+        this.candidateService = candidateService;
     }
 
     @GetMapping(path = "")
-    public @ResponseBody
-    List<Candidate> getAll() {
-        return candidateDao.findAll();
+    public @ResponseBody List<CandidateDto> findAll() {
+        return candidateService.findAll();
     }
 
-    @GetMapping(path = "/getById/{id}/**")
-    public @ResponseBody Candidate getById(@PathVariable final Integer id) {
-        return candidateDao.getOne(id);
+    @GetMapping(path = "/findById/{id}/**")
+    public @ResponseBody CandidateDto findById(@PathVariable final Integer id) {
+        return candidateService.findById(id);
     }
 
     @PostMapping(path = "/add/**")
-    public @ResponseBody List<Candidate> addNew(@RequestBody final Candidate candidate) {
-        candidateDao.save(candidate);
-        return candidateDao.findAll();
+    public void create(@RequestBody final Candidate candidate) {
+        candidateService.create(candidate);
     }
 
     @DeleteMapping(path = "/delete/{id}/**")
     public void delete(@PathVariable final Integer id) {
-        candidateDao.deleteById(id);
+        candidateService.delete(id);
     }
 
     @PutMapping(path = "/update/**")
-    public void update(@RequestBody final Candidate candidate) {
-        candidateDao.saveAndFlush(candidate);
+    public CandidateDto update(@RequestBody final Candidate candidate) {
+        return candidateService.update(candidate);
     }
 }

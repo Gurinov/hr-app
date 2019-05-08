@@ -1,7 +1,8 @@
 package com.gurinov.hrapp.controller;
 
-import com.gurinov.hrapp.dao.VacancyDao;
+import com.gurinov.hrapp.dto.VacancyDto;
 import com.gurinov.hrapp.model.Vacancy;
+import com.gurinov.hrapp.service.EntityService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,36 +11,34 @@ import java.util.List;
 @RequestMapping(path = "/vacancy")
 public final class VacancyController {
 
-    private final VacancyDao vacancyDao;
+    private final EntityService<Vacancy, VacancyDto> vacancyService;
 
-    public VacancyController(final VacancyDao vacancyDao) {
-        this.vacancyDao = vacancyDao;
+    public VacancyController(final EntityService<Vacancy, VacancyDto> vacancyService) {
+        this.vacancyService = vacancyService;
     }
 
     @GetMapping(path = "")
-    public @ResponseBody
-    List<Vacancy> getAll() {
-        return vacancyDao.findAll();
+    public @ResponseBody List<VacancyDto> findAll() {
+        return vacancyService.findAll();
     }
 
-    @GetMapping(path = "/getById/{id}/**")
-    public @ResponseBody Vacancy getById(@PathVariable final Integer id) {
-        return vacancyDao.getOne(id);
+    @GetMapping(path = "/findById/{id}/**")
+    public @ResponseBody VacancyDto findById(@PathVariable final Integer id) {
+        return vacancyService.findById(id);
     }
 
     @PostMapping(path = "/add/**")
-    public @ResponseBody List<Vacancy> addNew(@RequestBody final Vacancy vacancy) {
-        vacancyDao.save(vacancy);
-        return vacancyDao.findAll();
+    public void create(@RequestBody final Vacancy vacancy) {
+        vacancyService.create(vacancy);
     }
 
     @DeleteMapping(path = "/delete/{id}/**")
     public void delete(@PathVariable final Integer id) {
-        vacancyDao.deleteById(id);
+        vacancyService.delete(id);
     }
 
     @PutMapping(path = "/update/**")
-    public void update(@RequestBody final Vacancy vacancy) {
-        vacancyDao.saveAndFlush(vacancy);
+    public VacancyDto update(@RequestBody final Vacancy vacancy) {
+        return vacancyService.update(vacancy);
     }
 }

@@ -1,7 +1,8 @@
 package com.gurinov.hrapp.controller;
 
-import com.gurinov.hrapp.dao.SkillDao;
+import com.gurinov.hrapp.dto.SkillDto;
 import com.gurinov.hrapp.model.Skill;
+import com.gurinov.hrapp.service.EntityService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,36 +11,34 @@ import java.util.List;
 @RequestMapping(path = "/skill")
 public final class SkillController {
 
-    private final SkillDao skillDao;
+    private final EntityService<Skill, SkillDto> skillService;
 
-    public SkillController(final SkillDao skillDao) {
-        this.skillDao = skillDao;
+    public SkillController(final EntityService<Skill, SkillDto> skillService) {
+        this.skillService = skillService;
     }
 
     @GetMapping(path = "")
-    public @ResponseBody
-    List<Skill> getAll() {
-        return skillDao.findAll();
+    public @ResponseBody List<SkillDto> findAll() {
+        return skillService.findAll();
     }
 
-    @GetMapping(path = "/getById/{id}/**")
-    public @ResponseBody Skill getById(@PathVariable final Integer id) {
-        return skillDao.getOne(id);
+    @GetMapping(path = "/findById/{id}/**")
+    public @ResponseBody SkillDto findById(@PathVariable final Integer id) {
+        return skillService.findById(id);
     }
 
     @PostMapping(path = "/add/**")
-    public @ResponseBody List<Skill> addNew(@RequestBody final Skill skill) {
-        skillDao.save(skill);
-        return skillDao.findAll();
+    public void create(@RequestBody final Skill skill) {
+        skillService.create(skill);
     }
 
     @DeleteMapping(path = "/delete/{id}/**")
     public void delete(@PathVariable final Integer id) {
-        skillDao.deleteById(id);
+        skillService.delete(id);
     }
 
     @PutMapping(path = "/update/**")
-    public void update(@RequestBody final Skill skill) {
-        skillDao.saveAndFlush(skill);
+    public SkillDto update(@RequestBody final Skill skill) {
+        return skillService.update(skill);
     }
 }

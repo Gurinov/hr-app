@@ -1,6 +1,5 @@
 package com.gurinov.hrapp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,7 +13,6 @@ public class Responsibility {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "responsibility")
     private Set<CandidateExperience> experience;
 
