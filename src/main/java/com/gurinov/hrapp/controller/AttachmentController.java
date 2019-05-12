@@ -27,7 +27,7 @@ public final class AttachmentController {
         return attachmentService.findById(id);
     }
 
-    @PostMapping(path = "/add/**")
+    @PostMapping(path = "/create/**")
     public void create(@RequestBody final Attachment attachment) {
         attachmentService.create(attachment);
     }

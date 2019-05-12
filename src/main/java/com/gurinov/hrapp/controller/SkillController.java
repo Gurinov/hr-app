@@ -3,13 +3,14 @@ package com.gurinov.hrapp.controller;
 import com.gurinov.hrapp.dto.SkillDto;
 import com.gurinov.hrapp.model.Skill;
 import com.gurinov.hrapp.service.EntityService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/skill")
-public final class SkillController {
+public class SkillController {
 
     private final EntityService<Skill, SkillDto> skillService;
 
@@ -17,6 +18,7 @@ public final class SkillController {
         this.skillService = skillService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "")
     public @ResponseBody List<SkillDto> findAll() {
         return skillService.findAll();
@@ -27,7 +29,7 @@ public final class SkillController {
         return skillService.findById(id);
     }
 
-    @PostMapping(path = "/add/**")
+    @PostMapping(path = "/create/**")
     public void create(@RequestBody final Skill skill) {
         skillService.create(skill);
     }

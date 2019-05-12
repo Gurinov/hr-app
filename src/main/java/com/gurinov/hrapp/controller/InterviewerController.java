@@ -27,7 +27,7 @@ public final class InterviewerController {
         return interviewerService.findById(id);
     }
 
-    @PostMapping(path = "/add/**")
+    @PostMapping(path = "/create/**")
     public void create(@RequestBody final Interviewer interviewer) {
         interviewerService.create(interviewer);
     }

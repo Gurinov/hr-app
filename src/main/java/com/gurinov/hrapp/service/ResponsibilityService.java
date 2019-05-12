@@ -19,11 +19,11 @@ public final class ResponsibilityService implements EntityService<Responsibility
 
     @Override
     public List<ResponsibilityDto> findAll() {
-        ArrayList<ResponsibilityDto> responsibilitys = new ArrayList<>();
+        ArrayList<ResponsibilityDto> responsibilities = new ArrayList<>();
         for (Responsibility responsibility : responsibilityDao.findAll()) {
-            responsibilitys.add(new ResponsibilityDto(responsibility));
+            responsibilities.add(new ResponsibilityDto(responsibility));
         }
-        return responsibilitys;
+        return responsibilities;
     }
 
     @Override

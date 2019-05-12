@@ -27,7 +27,7 @@ public final class CandidateController {
         return candidateService.findById(id);
     }
 
-    @PostMapping(path = "/add/**")
+    @PostMapping(path = "/create/**")
     public void create(@RequestBody final Candidate candidate) {
         candidateService.create(candidate);
     }

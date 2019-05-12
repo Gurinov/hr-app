@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Data
 @Entity
@@ -22,5 +23,6 @@ public class ContactDetails {
     @Enumerated(EnumType.STRING)
     private ContactType type;
 
+    @Size(min = 5, max = 50)
     private String contactDetails;
 }

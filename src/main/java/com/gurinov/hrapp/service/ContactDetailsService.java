@@ -19,11 +19,11 @@ public final class ContactDetailsService implements EntityService<ContactDetails
 
     @Override
     public List<ContactDetailsDto> findAll() {
-        ArrayList<ContactDetailsDto> contactDetailss = new ArrayList<>();
+        ArrayList<ContactDetailsDto> contacts = new ArrayList<>();
         for (ContactDetails contactDetails : contactDetailsDao.findAll()) {
-            contactDetailss.add(new ContactDetailsDto(contactDetails));
+            contacts.add(new ContactDetailsDto(contactDetails));
         }
-        return contactDetailss;
+        return contacts;
     }
 
     @Override

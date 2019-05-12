@@ -4,6 +4,10 @@ import com.gurinov.hrapp.enums.State;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Data
@@ -17,8 +21,17 @@ public class Vacancy {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Skill> skills;
 
+    @Size(min = 2, max = 30)
     private String position;
+
+    @NotNull
+    @Min(0)
+    @Max(20000)
     private Integer salary;
+
+    @NotNull
+    @Min(0)
+    @Max(100)
     private Integer experience;
 
     @Enumerated(EnumType.STRING)

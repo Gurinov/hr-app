@@ -29,7 +29,7 @@ public final class CandidateExperienceController {
         return candidateExperienceService.findById(id);
     }
 
-    @PostMapping(path = "/add/**")
+    @PostMapping(path = "/create/**")
     public void create(@RequestBody final CandidateExperience candidateExperience) {
         candidateExperienceService.create(candidateExperience);
     }

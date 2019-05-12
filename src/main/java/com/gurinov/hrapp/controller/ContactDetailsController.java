@@ -27,7 +27,7 @@ public final class ContactDetailsController {
         return contactDetailsService.findById(id);
     }
 
-    @PostMapping(path = "/add/**")
+    @PostMapping(path = "/create/**")
     public void create(@RequestBody final ContactDetails contactDetails) {
         contactDetailsService.create(contactDetails);
     }

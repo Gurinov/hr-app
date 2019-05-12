@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.util.List;
 
@@ -28,9 +30,16 @@ public class CandidateExperience {
     )
     private List<Responsibility> responsibility;
 
+    @Past
     private Date dateFrom;
+
     private Date dateTo;
+
+    @Size(min = 2, max = 30)
     private String jobPosition;
+
     private String jobDescription;
+
+    @Size(min = 2, max = 30)
     private String companyName;
 }

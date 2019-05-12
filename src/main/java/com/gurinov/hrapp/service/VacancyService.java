@@ -19,11 +19,11 @@ public final class VacancyService implements EntityService<Vacancy, VacancyDto> 
 
     @Override
     public List<VacancyDto> findAll() {
-        ArrayList<VacancyDto> vacancys = new ArrayList<>();
+        ArrayList<VacancyDto> vacancies = new ArrayList<>();
         for (Vacancy vacancy : vacancyDao.findAll()) {
-            vacancys.add(new VacancyDto(vacancy));
+            vacancies.add(new VacancyDto(vacancy));
         }
-        return vacancys;
+        return vacancies;
     }
 
     @Override

@@ -27,7 +27,7 @@ public final class ResponsibilityController {
         return responsibilityService.findById(id);
     }
 
-    @PostMapping(path = "/add/**")
+    @PostMapping(path = "/create/**")
     public void create(@RequestBody final Responsibility responsibility) {
         responsibilityService.create(responsibility);
     }

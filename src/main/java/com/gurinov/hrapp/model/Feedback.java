@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Data
 @Entity
@@ -18,6 +19,9 @@ public class Feedback {
     @JoinColumn(name = "interviewer_id")
     private Interviewer interviewer;
 
+    @Size(min = 2, max = 30)
     private String result;
+
+    @Size(min = 2, max = 2000)
     private String feedback;
 }

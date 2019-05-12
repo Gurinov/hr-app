@@ -27,7 +27,7 @@ public final class VacancyController {
         return vacancyService.findById(id);
     }
 
-    @PostMapping(path = "/add/**")
+    @PostMapping(path = "/create/**")
     public void create(@RequestBody final Vacancy vacancy) {
         vacancyService.create(vacancy);
     }

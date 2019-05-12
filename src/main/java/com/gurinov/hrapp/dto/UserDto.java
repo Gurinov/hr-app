@@ -23,4 +23,10 @@ public class UserDto {
         state = user.getState();
         role = new RoleDto(user.getRole());
     }
+
+    public UserDto(final String email, final String password) {
+        id = 0;
+        this.email = email;
+        this.password = password;
+    }
 }

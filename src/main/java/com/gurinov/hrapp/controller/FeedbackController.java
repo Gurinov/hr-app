@@ -27,7 +27,7 @@ public final class FeedbackController {
         return feedbackService.findById(id);
     }
 
-    @PostMapping(path = "/add/**")
+    @PostMapping(path = "/create/**")
     public void create(@RequestBody final Feedback feedback) {
         feedbackService.create(feedback);
     }
