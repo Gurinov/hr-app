@@ -2,6 +2,8 @@ package com.gurinov.hrapp.service;
 
 import com.gurinov.hrapp.dao.UserDao;
 import com.gurinov.hrapp.dto.UserDto;
+import com.gurinov.hrapp.enums.State;
+import com.gurinov.hrapp.model.Role;
 import com.gurinov.hrapp.model.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,7 +44,10 @@ public final class UserService implements UserDetailsService, EntityService<User
 
     @Override
     public void create(final User obj) {
+        final Role role = new Role(2, "USER");
         obj.setPassword(passwordEncoder.encode(obj.getPassword()));
+        obj.setRole(role);
+        obj.setState(State.ACTIVE);
         userDao.save(obj);
     }
 
@@ -56,7 +61,7 @@ public final class UserService implements UserDetailsService, EntityService<User
         return new UserDto(userDao.saveAndFlush(obj));
     }
 
-    private UserDto findByEmail(final String email) {
+    public UserDto findByEmail(final String email) {
         List<UserDto> users = findAll();
         for (UserDto user : users) {
             if (user.getEmail().equals(email)) {
@@ -69,7 +74,7 @@ public final class UserService implements UserDetailsService, EntityService<User
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         UserDto user = findByEmail(username);
         if (user == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
+            return null;
         }
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),

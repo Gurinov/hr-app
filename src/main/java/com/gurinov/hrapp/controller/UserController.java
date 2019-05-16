@@ -6,17 +6,20 @@ import com.gurinov.hrapp.dto.UserDto;
 import com.gurinov.hrapp.model.User;
 import com.gurinov.hrapp.security.TokenProvider;
 import com.gurinov.hrapp.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 36000000)
 @RestController
 @RequestMapping(path = "/user")
 public final class UserController {
@@ -46,17 +49,21 @@ public final class UserController {
         return userService.findById(id);
     }
 
-    @PostMapping(path = "/create/**")
-    public void create(@RequestBody final User user) {
+    @PostMapping(path = "/create")
+    public ResponseEntity create(@Valid @RequestBody final User user, final BindingResult result) {
+        if (result.hasErrors() || userService.findByEmail(user.getEmail()) != null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error");
+        }
         userService.create(user);
+        return ResponseEntity.ok(user);
     }
 
-    @DeleteMapping(path = "/delete/{id}/**")
+    @DeleteMapping(path = "/delete/{id}")
     public void delete(@PathVariable final Integer id) {
         userService.delete(id);
     }
 
-    @PutMapping(path = "/update/**")
+    @PutMapping(path = "/update")
     public UserDto update(@RequestBody final User user) {
         return userService.update(user);
     }
@@ -72,6 +79,5 @@ public final class UserController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final String token = jwtTokenUtil.generateToken(authentication);
         return ResponseEntity.ok(new TokenDto(token));
-
     }
 }

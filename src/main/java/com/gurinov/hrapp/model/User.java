@@ -18,7 +18,6 @@ public class User {
     @Email
     private String email;
 
-    @Size(min = 4, max = 30)
     private String password;
 
     @Size(min = 2, max = 30)

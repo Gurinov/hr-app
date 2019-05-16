@@ -16,4 +16,12 @@ public class Role {
     private Integer id;
 
     private String name;
+
+    public Role(final Integer id, final String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Role() {
+    }
 }
