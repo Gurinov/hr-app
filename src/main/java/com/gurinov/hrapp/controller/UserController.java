@@ -6,6 +6,7 @@ import com.gurinov.hrapp.dto.UserDto;
 import com.gurinov.hrapp.model.User;
 import com.gurinov.hrapp.security.TokenProvider;
 import com.gurinov.hrapp.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -27,6 +29,9 @@ public final class UserController {
     private final AuthenticationManager authenticationManager;
     private final TokenProvider jwtTokenUtil;
     private final UserService userService;
+
+    @Value("${jwt.token.header}")
+    private String header;
 
     public UserController(
             final UserService userService,
@@ -43,7 +48,7 @@ public final class UserController {
         return userService.findAll();
     }
 
-    @GetMapping(path = "/findById/{id}/**")
+    @GetMapping(path = "/{id}/**")
     public @ResponseBody
     UserDto findById(@PathVariable final Integer id) {
         return userService.findById(id);
@@ -56,6 +61,11 @@ public final class UserController {
         }
         userService.create(user);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping(path = "/findUserByToken")
+    public UserDto getUserByToken(final HttpServletRequest req) {
+        return userService.findUserByToken(req.getHeader(header));
     }
 
     @DeleteMapping(path = "/delete/{id}")
@@ -80,4 +90,6 @@ public final class UserController {
         final String token = jwtTokenUtil.generateToken(authentication);
         return ResponseEntity.ok(new TokenDto(token));
     }
+
+
 }

@@ -5,6 +5,7 @@ import com.gurinov.hrapp.dto.UserDto;
 import com.gurinov.hrapp.enums.State;
 import com.gurinov.hrapp.model.Role;
 import com.gurinov.hrapp.model.User;
+import com.gurinov.hrapp.security.TokenProvider;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,12 +21,18 @@ import java.util.Set;
 @Service
 public final class UserService implements UserDetailsService, EntityService<User, UserDto> {
 
+    private final TokenProvider jwtTokenUtil;
     private final UserDao userDao;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(final BCryptPasswordEncoder passwordEncoder, final UserDao userDao) {
+    public UserService(
+            final BCryptPasswordEncoder passwordEncoder,
+            final UserDao userDao,
+            final TokenProvider jwtTokenUtil
+    ) {
         this.passwordEncoder = passwordEncoder;
         this.userDao = userDao;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @Override
@@ -87,5 +94,16 @@ public final class UserService implements UserDetailsService, EntityService<User
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName()));
         return authorities;
+    }
+
+    public UserDto findUserByToken(final String authToken) {
+        String username = null;
+        if (authToken != null) {
+            username = jwtTokenUtil.getUsernameFromToken(authToken);
+        }
+        if (username != null) {
+            return findByEmail(username);
+        }
+        return null;
     }
 }

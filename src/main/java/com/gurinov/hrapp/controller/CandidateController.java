@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 36000000)
 @RestController
 @RequestMapping(path = "/candidate")
 public final class CandidateController {
@@ -22,7 +23,7 @@ public final class CandidateController {
         return candidateService.findAll();
     }
 
-    @GetMapping(path = "/findById/{id}/**")
+    @GetMapping(path = "/{id}")
     public @ResponseBody CandidateDto findById(@PathVariable final Integer id) {
         return candidateService.findById(id);
     }

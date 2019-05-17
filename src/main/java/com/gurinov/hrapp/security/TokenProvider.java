@@ -28,7 +28,7 @@ public final class TokenProvider implements Serializable {
     @Value("${jwt.token.authorities-key}")
     private String authoritiesKey;
 
-    String getUsernameFromToken(final String token) {
+    public String getUsernameFromToken(final String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
@@ -66,7 +66,7 @@ public final class TokenProvider implements Serializable {
                 .compact();
     }
 
-    Boolean validateToken(final String token, final UserDetails userDetails) {
+    public Boolean validateToken(final String token, final UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (
                 username.equals(userDetails.getUsername())
